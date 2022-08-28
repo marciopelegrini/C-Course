@@ -76,3 +76,4 @@ nb-configuration.xml
 
 # Visual Studio Code
 .vscode/
+.DS_Store
