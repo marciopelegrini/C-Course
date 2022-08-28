@@ -15,7 +15,5 @@ int main() {
 
     printf("La somme est: %d\n", somme);
 
-
-
     return 0;
 }
