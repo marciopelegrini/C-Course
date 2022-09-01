@@ -1,0 +1,3 @@
+/Users/pelegrini_m/Cursos/C-Course/cmake-build-debug/CMakeFiles/C_Course.dir
+/Users/pelegrini_m/Cursos/C-Course/cmake-build-debug/CMakeFiles/edit_cache.dir
+/Users/pelegrini_m/Cursos/C-Course/cmake-build-debug/CMakeFiles/rebuild_cache.dir
