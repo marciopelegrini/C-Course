@@ -1,10 +1,9 @@
 #include <stdio.h> //Fichier header
-#include "aide.h"
+#include "tools.h"
 
 int main()
 {
     int n1, n2, ret_s, ret_m;
-
     message();
 
     printf("Tapez le 1er numéro : ");
