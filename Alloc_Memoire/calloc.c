@@ -1,6 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+//malloc laise des traces dans la mémoire
+//calloc nettoye avant de mettre données dans la mémoire.    
+
 int main()
 {
     int quantite, *p;
