@@ -92,12 +92,14 @@ void enregistrerProduit()
     printf("Entrez le nom du produit : \n");
     fgets(produits[compteur_produit].nom, 30, stdin);
 
-    printf("Entrez le nom du produit : \n");
-    scanf("%d", &produits[compteur_produit].prix);
+    printf("Entrez le prix du produit : \n");
+    scanf("%f", &produits[compteur_produit].prix);
 
-    printf("Le produit a bien été enregistrer.\n", strtok(produits[compteur_produit].nom, "\n"));
+    printf("Le produit %s a bien été enregistrer.\n", strtok(produits[compteur_produit].nom, "\n"));
     produits[compteur_produit].code = (compteur_produit + 1);
     compteur_produit++;
+    sleep(2);
+    menu();
 }
 void listerProduit()
 {
@@ -109,14 +111,71 @@ void listerProduit()
             printf("------------------\n");
             sleep(1);
         }
-
+        sleep(2);
+        menu();
     } else {
         printf("Il n'y a pas de produits enregistrés.\n");
+        sleep(2);
+        menu();
     }
 }
 void acheterProduit()
 {
-    // todo
+    int code;
+    int se_trouve_au_marche = 0;
+    if (compteur_produit > 0) {
+        printf("Veuillez entrer le code du produit souhaité : \n");
+        printf("================Produits disponibles==========\n");
+        for (int i = 0; i < compteur_produit; i++) {
+            infoProduit(produits[i]);
+            printf("--------------------------\n");
+            sleep(1);
+        }
+        scanf("%d", &code);
+        getchar();
+
+        for (int i = 0; i < compteur_produit; i++) {
+            if (produits[i].code == code) {
+                se_trouve_au_marche = 1;
+
+                if (compteur_panier > 0) {
+                    int* retour = aDansPanier(code);
+                    if (retour[0] == 1) {
+                        panier[retour[1]].quantite++;
+                        printf("La quantité du produit %s a été augmenté dans lepanier.\n",
+                            strtok(panier[retour[1]].produit.nom, "\n"));
+                        sleep(2);
+                        menu();
+                    } else {
+                        Produit p = prendreProduitParCode(code);
+                        panier[compteur_panier].produit = p;
+                        panier[compteur_panier].quantite = 1;
+                        compteur_panier++;
+                        printf("Le produit %s a bien été ajouté au panier.\n", strtok(p.nom, "\n"));
+                        sleep(2);
+                        menu();
+                    }
+                } else {
+                    Produit p = prendreProduitParCode(code);
+                    panier[compteur_panier].produit = p;
+                    panier[compteur_panier].quantite = 1;
+                    compteur_panier++;
+                    printf("Le produit %s a bien été ajouté au panier.\n", strtok(p.nom, "\n"));
+                    sleep(2);
+                    menu();
+                }
+            }
+        }
+        if (se_trouve_au_marche < 1) {
+            printf("Nous n'avons pas trouvé le produit avec le code %d.\n", code);
+            sleep(2);
+            menu();
+        }
+    } else {
+        printf("Il n'y a pas de produits à acheter.\n");
+        sleep(2);
+        menu();
+    }
 }
 void afficherPanier()
 {
@@ -129,19 +188,62 @@ void afficherPanier()
             printf("-------------------\n");
             sleep(1);
         }
+        sleep(2);
+        menu();
     } else {
         printf("Il n'y a pas de produits dans le panier.\n");
+        sleep(2);
+        menu();
     }
 }
 Produit prendreProduitParCode(int code)
 {
-    // todo
+    Produit p;
+    for (int i = 0; i < compteur_produit; i++) {
+        if (produits[i].code == code) {
+            p = produits[i];
+        }
+    }
+    return p;
 }
+
 int* aDansPanier(int code)
 {
-    // todo
+    int static retour[] = { 0, 0 };
+    for (int i = 0; i < compteur_panier; i++) {
+        if (panier[i].produit.code == code) {
+            retour[0] = 1; // Le produit se trouve dans le panier
+            retour[1] = i; // L'indice du produit dans le panier
+        }
+    }
+    return retour;
 }
+
 void fermerCommande()
 {
-    // todo
+    if (compteur_panier > 0) {
+        float valeurTotal = 0.0;
+        printf("Produits dans le panier\n");
+        printf("-----------------------\n");
+        for (int i = 0; i < compteur_panier; i++) {
+            Produit p = panier[i].produit;
+            int quantite = panier[i].quantite;
+            valeurTotal += p.prix * quantite;
+            infoProduit(p);
+            printf("Quantite : %d\n", quantite);
+            printf("-------------\n");
+            sleep(1);
+        }
+        printf("Votre facture est : %.2f\n", valeurTotal);
+
+        // Netoyer le panier
+        compteur_panier = 0;
+        printf("Merci pour la visite.\n");
+        sleep(5);
+        menu();
+    } else {
+        printf("Vous n'avez pas de produits dans le panier encore.\n");
+        sleep(3);
+        menu();
+    }
 }
