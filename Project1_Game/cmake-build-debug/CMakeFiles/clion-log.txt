@@ -1,1 +1,0 @@
-CMakeLists.txt not found in /Users/mandrei/C-Course/Project1_Game Select CMakeLists.txt
